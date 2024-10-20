@@ -1,0 +1,251 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 22.04.0 ] */
+/* [wxMaxima: input   start ] */
+ClearAll["Global'*"]$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* Defining Governing Equations in Cylindrical Coordinates */;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* Continuity Equation */;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+continui;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+continuity(u_r, u_t, u_z) := (1/r)*diff(u_r*r,r) + (1/r)*diff(u_t,theta)+diff(u_z,z)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* R-Momentum Equation*/;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+rmom(u_r,u_t,u_z,p,Re):= diff(u_r,t)+u_r*diff(u_r,r)+(u_t/r)*diff(u_r,theta)-(u_t^2/r)+u_z*diff(u_r,z)+diff(p,r)-(1/Re)*( (1/r)*diff( (r*diff(u_r,r)) , r)-u_r/(r^2)+(1/(r^2))*diff(u_r,theta,2)-(2/(r^2))*diff(u_t,theta)+diff(u_r,z,2))$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* Theta-Momentum Equation*/;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+tmom(u_r,u_t,u_z,p,Re):= diff(u_t,t)+u_r*diff(u_t,r)+(u_t/r)*diff(u_t,theta)+(u_t*u_r/r)+u_z*diff(u_t,z)+(1/r)*diff(p,theta)-(1/Re)*( (1/r)*diff( (r*diff(u_t,r)) , r)-u_t/(r^2)+(1/(r^2))*diff(u_t,theta,2)+(2/(r^2))*diff(u_r,theta)+diff(u_t,z,2))$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* Z-Momentum Equation*/;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+zmom(u_r,u_t,u_z,p,Re):= diff(u_z,t)+u_r*diff(u_z,r)+(u_t/r)*diff(u_z,theta)+u_z*diff(u_z,z)+diff(p,z)-(1/Re)*( (1/r)*diff( (r*diff(u_z,r)) , r)+(1/(r^2))*diff(u_z,theta,2)+diff(u_z,z,2))$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* Defining Instantaneous Velocity and Pressure in terms of Base State and Perturbations*/;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+depends([u_rtilde,u_ttilde,u_ztilde,p_tilde],[r,theta,z,t])$
+depends([u_ro,u_to,u_zo],r)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* Linearized Continuity Equation*/;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+masseq:continuity(u_ro+epsilon*u_rtilde,u_to+epsilon*u_ttilde,u_zo+epsilon*u_ztilde)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+linmasseq:limit(diff(masseq,epsilon),epsilon,0);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* Linearized r-momentum Equation*/;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+rmomeq: rmom(u_ro+epsilon*u_rtilde,u_to+epsilon*u_ttilde,u_zo+epsilon*u_ztilde,epsilon*p_tilde,Re)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+linrmomeq:limit(diff(rmomeq,epsilon),epsilon,0);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* Linearized theta-momentum Equation*/;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+tmomeq: tmom(u_ro+epsilon*u_rtilde,u_to+epsilon*u_ttilde,u_zo+epsilon*u_ztilde,epsilon*p_tilde,Re)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+lintmomeq:limit(diff(tmomeq,epsilon),epsilon,0);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* Linearized z-momentum Equation*/;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+zmomeq: zmom(u_ro+epsilon*u_rtilde,u_to+epsilon*u_ttilde,u_zo+epsilon*u_ztilde,epsilon*p_tilde,Re)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+linzmomeq:limit(diff(zmomeq,epsilon),epsilon,0);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/*   */;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* Modal Analysis*/;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+depends([u_rhat,u_that,u_zhat,p_hat],r)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* Continuity Equation */;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+modalcontinuity:ev(linmasseq,numer,diff,expand,u_rtilde=%i*u_rhat*exp((k*z+m*theta-omega*t)*%i), u_ttilde= u_that*exp((k*z+m*theta-omega*t)*%i),u_ztilde= u_zhat*exp((k*z+m*theta-omega*t)*%i),p_tilde= p_hat*exp((k*z+m*theta-omega*t)*%i) )$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+modcontinuity:scsimp(modalcontinuity,%e^(%i*m*theta-%i*omega*t+%i*k*z)=1);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* r-momentum  */;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+modalrmom:ev(linrmomeq,numer,diff,expand,u_rtilde=u_rhat*exp((k*r+m*theta-omega*t)*%i), u_ttilde= u_that*exp((k*r+m*theta-omega*t)*%i),u_ztilde= u_zhat*exp((k*r+m*theta-omega*t)*%i),p_tilde= p_hat*exp((k*r+m*theta-omega*t)*%i) )$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+modrmom:scsimp(modalrmom,%e^(%i*m*theta-%i*omega*t+%i*k*r)=1);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* theta-momentum  */;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+modaltmom:ev(lintmomeq,numer,diff,expand,u_rtilde=u_rhat*exp((k*z+m*theta-omega*t)*%i), u_ttilde= u_that*exp((k*z+m*theta-omega*t)*%i),u_ztilde= u_zhat*exp((k*z+m*theta-omega*t)*%i),p_tilde= p_hat*exp((k*z+m*theta-omega*t)*%i) )$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+modtmom:scsimp(modaltmom,%e^(%i*m*theta-%i*omega*t+%i*k*z)=1);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* z-momentum  */;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+modalzmom:ev(linzmomeq,numer,diff,expand,u_rtilde=u_rhat*exp((k*z+m*theta-omega*t)*%i), u_ttilde= u_that*exp((k*z+m*theta-omega*t)*%i),u_ztilde= u_zhat*exp((k*z+m*theta-omega*t)*%i),p_tilde= p_hat*exp((k*z+m*theta-omega*t)*%i) )$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+modzmom:scsimp(modalzmom=0,%e^(-%i*omega*t)=1,%e^(%i*m*theta+%i*k*z)=1);
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* Final Latex Form of the Equations */;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* Continuity Equation */;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+tex(modcontinuity)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* r-Momentum Equation*/;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+tex(modrmom)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* theta-Momentum Equation*/;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+tex(modtmom)$
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+/* Z-Momentum Equation*/;
+/* [wxMaxima: input   end   ] */
+
+
+/* [wxMaxima: input   start ] */
+tex(modzmom)$
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 22.04.0"$
